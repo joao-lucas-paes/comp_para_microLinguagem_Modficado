@@ -59,7 +59,6 @@ Scanner::nextToken()
         return digitGetter();
     
     else if (isOperator(input[pos])) {
-        cout << "debbuger: " << pos << " " << input[pos] << endl;
         Token* tkn = operatorGetter();
         if (not (tkn->name == UNDEF))
             return tkn;
@@ -86,10 +85,10 @@ Token *Scanner::operatorGetter(){
     else if (input[pos] == '!') 
         return operatorCheck(RELOP, RELOP, '=',  NT, NE);
 
-    else if (input[pos++] == '&' and input[pos++] == '&')
+    else if (input[pos] == '&' and input[(++pos)++] == '&')
         return new Token(RELOP, AND);
     
-    else if (input[pos++] == '|' and input[pos++] == '|')
+    else if (input[pos] == '|' and input[(++pos)++] == '|')
         return new Token(RELOP, OR);
     
     return new Token(UNDEF);
