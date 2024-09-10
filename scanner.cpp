@@ -1,11 +1,17 @@
 #include "scanner.h"    
 
+bool isOperator(char input){
+    return input == '=' or input == '>' or input == '<' or input == '!' or input == '&' or input == '|';
+}
+
 //Construtor
 Scanner::Scanner(string input)
 {
     this->input = input;
+
     cout << "Entrada: " << input << endl << "Tamanho: " 
          << input.length() << endl;
+
     pos = 0;
 }
 
@@ -13,198 +19,119 @@ Scanner::Scanner(string input)
 Token* 
 Scanner::nextToken()
 {
-    Token* tok;
+    //string lexeme;
 
-    int state = 0;
+    //Consumir espaços em branco
+    while (isspace(input[pos]))
+        pos++;
 
-    while (true)
-    {
-        switch(state)
-        {
-            case 0://case 9: case 12: case 22:
-                if (input[pos] == '\0')
-                {
-                    tok = new Token(END_OF_FILE);
-                    return tok;
-                }
-                if (input[pos] == '<')
-                    state = 1;
-                else if (input[pos] == '=')
-                    state = 5;
-                else if (input[pos] == '>')
-                    state = 6;
-                else if (isalpha(input[pos]))
-                    state = 10;
-                else if (isdigit(input[pos]))
-                    state = 13;
-                else if (isspace(input[pos]))
-                    state = 23;
-                else
-                    lexicalError();
-                //TO BE CONTINUED
+    //Verificar os tokens possíveis
+    //Fim de arquivo
+    if (input[pos] == '\0')
+        return sumAndToken(END_OF_FILE);
 
-                pos++;
-                break;
+    //Operadores aritméticos
+    else if (input[pos] == '+')
+        return sumAndToken(PLUS);
 
-            case 1:
-                if (input[pos] == '=')
-                    state = 2;
-                else if (input[pos] == '>')
-                    state = 3;
-                else
-                    state = 4;
+    else if (input[pos] == '-')
+        return sumAndToken(MINUS);
+        
+    else if (input[pos] == '*')
+        return sumAndToken(MULT);
 
-                pos++;
+    else if (isDiv())
+        return sumAndToken(DIV);
 
-                break;
+    //Parênteses
+    else if (input[pos] == '(')
+        return sumAndToken(LPAREN);
 
-            case 2://LE
-                return new Token(RELOP, LE);
+    else if (input[pos] == ')')
+        return sumAndToken(RPAREN);
+    
+    //Identificadores
+    else if (isalpha(input[pos]) or input[pos] == '_')
+        return idGetter();
 
-            case 3://NE
-                return new Token(RELOP, NE);
-
-            case 4://LT
-                tok = new Token(RELOP, LT);
-                pos--;
-                return tok;
-
-            case 5://EQ
-                tok = new Token(RELOP, EQ);
-
-                return tok;
-
-            case 6:
-                if (input[pos] == '=')
-                    state = 7;
-                else
-                    state = 8;
-
-                pos++;
-
-                break;
-
-            case 7://GE
-                return new Token(RELOP, GE);
-
-            case 8://GT
-                tok = new Token(RELOP, GT);
-                pos--;
-                return tok;
-
-            case 10:
-                if (!isalnum(input[pos]))
-                    state = 11;
-                pos++;
-                break;
-
-            case 11:
-                tok = new Token(ID);
-                pos--;
-                return tok;
-
-            case 13:
-                if (input[pos] == '.')
-                    state = 14;
-                else if (input[pos] == 'E')
-                    state = 16;
-                else if (!(isdigit(input[pos])))
-                    state = 20;
-                pos++;
-                break;
-
-            case 14:
-                if (isdigit(input[pos]))
-                {
-                    state = 15;
-                    pos++;
-                }
-                else
-                    lexicalError();
-
-                break;
-
-            case 15:
-                if (input[pos] == 'E')
-                    state = 16;
-                else if (!(isdigit(input[pos])))
-                    state = 21;
-
-                pos++;
-
-                break;
-
-            case 16:
-                if (input[pos] == '+' || input[pos] == '-')
-                    state = 17;
-                else if (isdigit(input[pos]))
-                    state = 18;
-                else
-                    lexicalError();
-
-                pos++;
-
-                break;
-
-            case 17:
-                if (isdigit(input[pos]))
-                {
-                    state = 18;
-                    pos++;
-                }
-                else
-                    lexicalError();
-
-                break;
-
-            case 18:
-                if (!isdigit(input[pos]))
-                    state = 19;
-
-                pos++;
-
-                break;
-
-            case 19:
-                tok = new Token(NUMBER, DOUBLE_LITERAL);
-
-                pos--;
-
-                return tok;
-
-            case 20:
-                tok = new Token(NUMBER, INTEGER_LITERAL);
-
-                pos--;
-
-                return tok;
-
-            case 21:
-                tok = new Token(NUMBER, FLOAT_LITERAL);
-
-                pos--;
-
-                return tok;
-
-            case 23:
-                if (!isspace(input[pos]))
-                    state = 24;
-
-                pos++;
-
-                break;
-
-            case 24:
-                pos--;
-                state = 0;
-
-                break;
-
-            default:
-                lexicalError();
-
-        }
+    //Números
+    else if (isdigit(input[pos]))
+        return digitGetter();
+    
+    else if (isOperator(input[pos])) {
+        cout << "debbuger: " << pos << " " << input[pos] << endl;
+        Token* tkn = operatorGetter();
+        if (not (tkn->name == UNDEF))
+            return tkn;
     }
+
+    lexicalError();
+}
+
+bool Scanner::isDiv()
+{
+    return input[pos] == '/' and input[pos + 1] != '/' and input[pos + 1] != '*';
+}
+
+Token *Scanner::operatorGetter(){
+    if (input[pos] == '=')
+        return operatorCheck(ASSIGN, RELOP, '=', -1, EQ);
+    
+    else if (input[pos] == '>')
+        return operatorCheck(RELOP, RELOP, '=', GT, GE);        
+    
+    else if (input[pos] == '<') 
+        return operatorCheck(RELOP, RELOP, '=', LT, LE);        
+    
+    else if (input[pos] == '!') 
+        return operatorCheck(RELOP, RELOP, '=',  NT, NE);
+
+    else if (input[pos++] == '&' and input[pos++] == '&')
+        return new Token(RELOP, AND);
+    
+    else if (input[pos++] == '|' and input[pos++] == '|')
+        return new Token(RELOP, OR);
+    
+    return new Token(UNDEF);
+}
+
+Token *Scanner::operatorCheck(int operator1, int operator2, char value, int attr1, int attr2)
+{
+    if (input[++pos] == value)
+        return sumAndToken(operator2, attr2);
+    return new Token(operator1, attr1);
+}
+
+Token *Scanner::idGetter()
+{
+    // lexeme.push_back(input[pos]);
+    pos++;
+    while (isalnum(input[pos]) || input[pos] == '_')
+    {
+        // lexeme.push_back(input[pos]);
+        pos++;
+    }
+
+    return new Token(ID);
+}
+
+Token *Scanner::digitGetter()
+{
+    // lexeme.push_back(input[pos]);
+    pos++;
+    while (isdigit(input[pos]))
+    {
+        // lexeme.push_back(input[pos]);
+        pos++;
+    }
+
+    return new Token(NUMBER);
+}
+
+Token* Scanner::sumAndToken(int name, int attr)
+{
+    pos++;
+    return new Token(name, attr);
 }
 
 void 

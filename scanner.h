@@ -7,12 +7,24 @@ class Scanner
         int pos;//Posição atual
     
     public:
-        //Construtor
+    //Construtor
         Scanner(string);
     
         //Método que retorna o próximo token da entrada
-        Token* nextToken();        
-    
-        //Método para manipular erros
+        Token *nextToken();
+
+        bool isDiv();
+
+        Token *idGetter();
+
+        Token *digitGetter();
+
+        Token *operatorGetter();
+
+        Token *operatorCheck(int operator1, int operator2, char value, int attr1 = -1, int attr2 = -1);
+
+        Token *sumAndToken(int name, int attr = -1);
+
+        // Método para manipular erros
         void lexicalError();
 };

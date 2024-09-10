@@ -13,7 +13,7 @@ int main(/*int argc, char* argv[]*/)
     do
     {
         t = scanner->nextToken();
-        cout << t->name << " " << endl;
+        cout << t->name << " " << t->attribute << endl;
     }while (t->name != END_OF_FILE);
 
     delete scanner;

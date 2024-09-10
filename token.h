@@ -8,21 +8,29 @@ enum Names
 {
     UNDEF,//0
     ID,//1
-    IF,//2
-    ELSE,//3
-    THEN,//4
-    RELOP,//5
-    EQ,//6
-    NE,//7
-    GT,//8
-    GE,//9
-    LT,//10
-    LE,//11
-    NUMBER,//12
-    DOUBLE_LITERAL,//13
-    FLOAT_LITERAL,//14
-    INTEGER_LITERAL,//15
-    END_OF_FILE//16
+    PLUS,//2
+    MINUS,//3
+    MULT,//4
+    DIV,//5
+    NUMBER,//6
+    LPAREN,//7
+    RPAREN,//8
+    ASSIGN,//
+    RELOP,//
+    END_OF_FILE//
+};
+
+enum RELOP 
+{
+    LE,
+    LT,
+    EQ,
+    NE,
+    GT,
+    GE,
+    NT,
+    AND,
+    OR,
 };
 
 class Token 
