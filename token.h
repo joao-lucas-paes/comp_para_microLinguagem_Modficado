@@ -15,6 +15,10 @@ enum Names
     NUMBER,//6
     LPAREN,//7
     RPAREN,//8
+    LBRACKET,
+    RBRACKET,
+    LBRACE,
+    RBRACE,
     ASSIGN,//
     RELOP,//
     LITERAL,

@@ -49,6 +49,18 @@ Scanner::nextToken()
 
     else if (input[pos] == ')')
         return sumAndToken(RPAREN);
+    
+    else if (input[pos] == '[')
+        return sumAndToken(LBRACKET);
+
+    else if (input[pos] == ']')
+        return sumAndToken(RBRACKET);
+    
+    else if (input[pos] == '{')
+        return sumAndToken(LBRACE);
+
+    else if (input[pos] == '}')
+        return sumAndToken(RBRACE);
 
     else if (input[pos] == '\'') {
 
@@ -58,6 +70,16 @@ Scanner::nextToken()
             input[++pos] == '\'')
             return sumAndToken(LITERAL, CHAR);
 
+    }
+
+    else if (input[pos] == '\"') {
+
+        while(isprint(input[++pos]) and 
+            input[pos] != '\n' and 
+            input[pos] != '"');
+        
+        if (input[pos] == '\"')
+            return sumAndToken(LITERAL, STRING);
     }
 
     //Identificadores
