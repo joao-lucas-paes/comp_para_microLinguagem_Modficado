@@ -13,6 +13,8 @@ class Scanner
         //Método que retorna o próximo token da entrada
         Token *nextToken();
 
+        bool isChar();
+
         bool isDiv();
 
         Token *idGetter();

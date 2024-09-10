@@ -49,7 +49,17 @@ Scanner::nextToken()
 
     else if (input[pos] == ')')
         return sumAndToken(RPAREN);
-    
+
+    else if (input[pos] == '\'') {
+
+        if (isprint(input[++pos]) and 
+            input[pos] != '\\' and 
+            input[pos] != '\'' and 
+            input[++pos] == '\'')
+            return sumAndToken(LITERAL, CHAR);
+
+    }
+
     //Identificadores
     else if (isalpha(input[pos]) or input[pos] == '_')
         return idGetter();
@@ -65,6 +75,11 @@ Scanner::nextToken()
     }
 
     lexicalError();
+}
+
+bool Scanner::isChar()
+{
+    return isprint(input[pos]);
 }
 
 bool Scanner::isDiv()

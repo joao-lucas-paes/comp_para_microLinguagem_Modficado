@@ -6,7 +6,7 @@ using namespace std;
 
 enum Names 
 {
-    UNDEF,//0
+    UNDEF=-1,//0
     ID,//1
     PLUS,//2
     MINUS,//3
@@ -17,7 +17,13 @@ enum Names
     RPAREN,//8
     ASSIGN,//
     RELOP,//
+    LITERAL,
     END_OF_FILE//
+};
+
+enum LITERAL {
+    CHAR,
+    STRING
 };
 
 enum RELOP 
