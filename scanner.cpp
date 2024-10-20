@@ -83,7 +83,7 @@ Scanner::nextToken()
     }
 
     //Identificadores
-    else if (isalpha(input[pos]) or input[pos] == '_')
+    else if (isalpha(input[pos]))
         return idGetter();
 
     //Números
