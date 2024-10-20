@@ -61,6 +61,12 @@ Scanner::nextToken()
 
     else if (input[pos] == '}')
         return sumAndToken(RBRACE);
+    
+    else if (input[pos] == ';')
+        return sumAndToken(SEMICOLON);
+    
+    else if (input[pos] == ',')
+        return sumAndToken(COMMA);
 
     else if (input[pos] == '\'') {
 

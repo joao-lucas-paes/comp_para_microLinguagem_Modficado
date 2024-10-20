@@ -6,24 +6,27 @@ using namespace std;
 
 enum Names 
 {
-    UNDEF=-1,//0
-    ID,//1
-    PLUS,//2
-    MINUS,//3
-    MULT,//4
-    DIV,//5
-    NUMBER,//6
-    LPAREN,//7
-    RPAREN,//8
+    UNDEF=-1,
+    ID,
+    PLUS,
+    MINUS,
+    MULT,
+    DIV,
+    NUMBER,
+    LPAREN,
+    RPAREN,
     LBRACKET,
     RBRACKET,
     LBRACE,
     RBRACE,
-    ASSIGN,//
-    RELOP,//
+    COMMA,
+    SEMICOLON,
+    ASSIGN,
+    RELOP,
     LITERAL,
-    END_OF_FILE//
+    END_OF_FILE
 };
+
 
 enum LITERAL {
     CHAR,
