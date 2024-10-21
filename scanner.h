@@ -4,18 +4,23 @@ class Scanner
 {
     private: 
         string input;//Armazena o texto de entrada
-        int pos;//Posição atual
+        int pos;//Posicao atual
+        int spos;//posicao inicial
     
     public:
     //Construtor
         Scanner(string);
     
-        //Método que retorna o próximo token da entrada
+        //Método que retorna o proximo token da entrada
         Token *nextToken();
 
         bool isChar();
 
         bool isDiv();
+
+        bool isCommentLine();
+
+        bool isComment();
 
         Token *idGetter();
 
@@ -27,6 +32,6 @@ class Scanner
 
         Token *sumAndToken(int name, int attr = -1);
 
-        // Método para manipular erros
+        // Metodo para manipular erros
         void lexicalError();
 };

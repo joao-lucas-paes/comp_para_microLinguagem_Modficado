@@ -24,6 +24,7 @@ enum Names
     ASSIGN,
     RELOP,
     LITERAL,
+    BREAKLINE,
     END_OF_FILE
 };
 
