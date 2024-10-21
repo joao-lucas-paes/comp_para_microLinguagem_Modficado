@@ -1,10 +1,10 @@
 #include "scanner.h"
+#include <sstream>
 
-int main(/*int argc, char* argv[]*/) 
-{
-    string input;
-    
-    getline(cin, input);
+int main(/*int argc, char* argv[]*/) {
+    ostringstream buffer;
+    buffer << cin.rdbuf();
+    string input = buffer.str();
 
     Scanner* scanner = new Scanner(input);
     
