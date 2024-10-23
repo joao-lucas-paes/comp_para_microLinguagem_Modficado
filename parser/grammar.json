@@ -1,0 +1,65 @@
+{
+    "tokens":[
+        "EOF", "ID", "(", ")", 
+        "{ ", "}", ",", ";", 
+        "char", "void", "int",
+        "[", "]", "else", "if",
+        "while", "return", "for",
+        "integerconstant", "charconstant",
+        "stringconstant", "+", "-", 
+        "*", "/", "==", "!=", "<=", 
+        "<", ">=", ">", "&&", "||"
+    ],
+    "states":{
+        "Program": ["mFunction EOF"],
+        "Function": [
+            "Type ID ( ParamTypes ) { mVarDeclaration mStatement }",
+            "void ID ( ParamTypes ) { mVarDeclaration mStatement }"
+            ],
+        "mFunction": ["", "Function mFunction"],
+        "mVarDeclaration": ["", "Type VarDeclaration commaDeclaration; mVarDeclaration"],
+        "commaDeclaration": ["", ", VarDeclaration commaDeclaration"],
+        "VarDeclaration":
+            ["ID possibleArr"],
+        "possibleArrDef":["", "[ integerconstant ]"],
+        "Type": ["char", "int"],
+        "ParamTypes":["void", "Type ID possibleArr mParamTypes"],
+        "possibleArr":["", "[]"],
+        "mParamTypes": ["", ", Type ID possibleArr mParamTypes"],
+        "Statement": [
+            "if ( Expression ) Statement elseStatement",
+            "while ( Expression ) Statement",
+            "for ( possibleAssign ; possibleExpression ; possibleAssign ) Statement",
+            "return [possibleExpression] ;",
+            "Assign ;",
+            "ID ( possibleExpression_comma ) ;",
+            "( possibleStatement )",
+            ";"
+            ],
+        "elseStatement": ["", "else Statement"],
+        "mStatement": ["", "mStatement Statement"],
+        "possibleStatement":["", "Statement"],
+        "Assign": ["ID possibleIDCall = Expression"],
+        "possibleIDCall": ["", "[ Expression ]"],
+        "possibleAssign": ["", "Assign"],
+        "Expression": [
+            "- Expression",
+            "! Expression",
+            "Expression BinOp Expression",
+            "Expression Relop Expression",
+            "Expression LogOp Expression",
+            "ID IDCall",
+            "( Expression )",
+            "integerconstant",
+            "charconstant",
+            "stringconstant"
+            ],
+        "commaExpression": ["", ", Expression commaExpression"],
+        "possibleExpression_comma": ["", "( Expression commaExpression )"],
+        "IDCall": ["", "possibleExpression_comma", "[ Expression ]"],
+        "possibleExpression": ["", "Expression"],
+        "BinOP": ["+", "-", "*", "/"],
+        "RelOP": ["==", "!=", "<=", "<", ">=", ">"],
+        "LogOP": ["&&", "||"]
+    }
+}
