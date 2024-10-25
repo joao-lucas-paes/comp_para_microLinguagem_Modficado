@@ -1,5 +1,17 @@
 {
     "tokens":[
+        "EOF", "ID", "LPAREN", "RPAREN", 
+        "LBRACKET", "RBRACKET", "COMMA", "SEMICOLON", 
+        "char", "void", "int",
+        "LBRACE", "RBRACE", "else", "if",
+        "while", "return", "for",
+        "integerconstant", "charconstant",
+        "stringconstant", "SUM", "MINUS", 
+        "MULT", "DIV", "EQ", "NEQ", "LEQ", 
+        "LT", "GEQ", "GT", "AND", "OR",
+        "NOT", "RECEIVE"
+    ],
+    "Symbols":[
         "EOF", "ID", "(", ")", 
         "{ ", "}", ",", ";", 
         "char", "void", "int",
@@ -8,58 +20,59 @@
         "integerconstant", "charconstant",
         "stringconstant", "+", "-", 
         "*", "/", "==", "!=", "<=", 
-        "<", ">=", ">", "&&", "||"
+        "<", ">=", ">", "&&", "||",
+        "!", "="
     ],
     "states":{
         "Program": ["mFunction EOF"],
         "Function": [
-            "Type ID ( ParamTypes ) { mVarDeclaration mStatement }",
-            "void ID ( ParamTypes ) { mVarDeclaration mStatement }"
+            "Type ID LPAREN ParamTypes RPAREN LBRACKET mVarDeclaration mStatement RBRACKET",
+            "void ID LPAREN ParamTypes RPAREN LBRACKET mVarDeclaration mStatement RBRACKET"
             ],
         "mFunction": ["", "Function mFunction"],
-        "mVarDeclaration": ["", "Type VarDeclaration commaDeclaration; mVarDeclaration"],
-        "commaDeclaration": ["", ", VarDeclaration commaDeclaration"],
+        "mVarDeclaration": ["", "Type VarDeclaration commaDeclaration SEMICOLON mVarDeclaration"],
+        "commaDeclaration": ["", "COMMA VarDeclaration commaDeclaration"],
         "VarDeclaration":
-            ["ID possibleArr"],
-        "possibleArrDef":["", "[ integerconstant ]"],
+            ["ID possibleArrDef"],
+        "possibleArrDef":["", "LBRACE integerconstant RBRACE"],
         "Type": ["char", "int"],
         "ParamTypes":["void", "Type ID possibleArr mParamTypes"],
-        "possibleArr":["", "[]"],
-        "mParamTypes": ["", ", Type ID possibleArr mParamTypes"],
+        "possibleArr":["", "LBRACE RBRACE"],
+        "mParamTypes": ["", "COMMA Type ID possibleArr mParamTypes"],
         "Statement": [
-            "if ( Expression ) Statement elseStatement",
-            "while ( Expression ) Statement",
-            "for ( possibleAssign ; possibleExpression ; possibleAssign ) Statement",
-            "return [possibleExpression] ;",
-            "Assign ;",
-            "ID ( possibleExpression_comma ) ;",
-            "( possibleStatement )",
-            ";"
+            "if LPAREN Expression RPAREN Statement elseStatement",
+            "while LPAREN Expression RPAREN Statement",
+            "for LPAREN possibleAssign SEMICOLON possibleExpression SEMICOLON possibleAssign RPAREN Statement",
+            "return possibleExpression SEMICOLON",
+            "Assign SEMICOLON",
+            "ID LPAREN possibleExpression_comma RPAREN SEMICOLON",
+            "LPAREN possiblTtatement RPAREN",
+            "SEMICOLON"
             ],
         "elseStatement": ["", "else Statement"],
         "mStatement": ["", "mStatement Statement"],
-        "possibleStatement":["", "Statement"],
-        "Assign": ["ID possibleIDCall = Expression"],
-        "possibleIDCall": ["", "[ Expression ]"],
+        "possiblTtatement":["", "Statement"],
+        "Assign": ["ID possibleIDCall RECEIVE Expression"],
+        "possibleIDCall": ["", "LBRACE Expression RBRACE"],
         "possibleAssign": ["", "Assign"],
         "Expression": [
-            "- Expression",
-            "! Expression",
-            "Expression BinOp Expression",
-            "Expression Relop Expression",
-            "Expression LogOp Expression",
+            "MINUS Expression",
+            "NOT Expression",
+            "Expression BinOP Expression",
+            "Expression RelOP Expression",
+            "Expression LogOP Expression",
             "ID IDCall",
-            "( Expression )",
+            "LPAREN Expression RPAREN",
             "integerconstant",
             "charconstant",
             "stringconstant"
             ],
-        "commaExpression": ["", ", Expression commaExpression"],
-        "possibleExpression_comma": ["", "( Expression commaExpression )"],
-        "IDCall": ["", "possibleExpression_comma", "[ Expression ]"],
+        "commaExpression": ["", "COMMA Expression commaExpression"],
+        "possibleExpression_comma": ["", "LPAREN Expression commaExpression RPAREN"],
+        "IDCall": ["", "possibleExpression_comma", "LBRACE Expression RBRACE"],
         "possibleExpression": ["", "Expression"],
-        "BinOP": ["+", "-", "*", "/"],
-        "RelOP": ["==", "!=", "<=", "<", ">=", ">"],
-        "LogOP": ["&&", "||"]
+        "BinOP": ["SUM", "MINUS", "MULT", "DIV"],
+        "RelOP": ["EQ", "NEQ", "LEQ", "LT", "GEQ", "GT"],
+        "LogOP": ["AND", "OR"]
     }
 }
