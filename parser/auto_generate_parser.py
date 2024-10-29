@@ -19,6 +19,8 @@ productions = grammar["states"]
 states = list(productions.keys())
 n_prod = 0
 
+
+
 t_len = int(
     math.log10(
         sum([
@@ -38,9 +40,14 @@ for state in productions.keys():
                 f"    pass")
         exec(func)
 
+
+
 parser = yacc.yacc("SLR")
 action = parser.action
 goto = parser.goto
+
+if "precedence" in grammar:
+    precedence = tuple([tuple(i) for i in grammar["precedence"]])
 
 def join_action(index, action, rule_row):
     if index in action:
