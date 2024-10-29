@@ -65,4 +65,8 @@ class Token
             this->name = name;
             attribute = attr;
         }
+
+        bool operator==(Token &t) {
+            return t.name == this->name and t.attribute == this->attribute;
+        }
 };
