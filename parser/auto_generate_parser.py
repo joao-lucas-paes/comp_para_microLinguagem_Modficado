@@ -19,8 +19,6 @@ productions = grammar["states"]
 states = list(productions.keys())
 n_prod = 0
 
-
-
 t_len = int(
     math.log10(
         sum([
