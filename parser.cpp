@@ -1,111 +1,61 @@
 #include "parser.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <regex>
 
-Parser::Parser(string input)
-{
-	scanner = new Scanner(input);
-    advance();
+Parser::Parser(string input) {
+	this->scanner = new Scanner(input);
+	vector<vector<string>> arrgoto = read_csv(GOTO);
+	vector<vector<string>> arraction = read_csv(ACTION);
+	this->generate_table(arrgoto, arraction);
 }
 
-void
-Parser::run()
-{
-    goal();
+void Parser::generate_table(vector<vector<string>>  arrGoto, vector<vector<string>> arrAction) {
+    int headerLength = (int) arrGoto[0].size();
+    Token* header = new Token[headerLength];
+    for(int i=0; i < arrGoto.size(); i++) {
+        cout << "[";
+        for(int j=0; j < arrGoto[i].size(); j++) {
+            cout << arrGoto[i][j] << ", ";
+            if(i == 0 and j > 2) {
+            }
+        }
+        cout << "]" << endl;
+    }
 }
 
-void
-Parser::advance()
-{
-	lToken = scanner->nextToken();
+vector<vector<string>> Parser::read_csv(int GotoAction) {
+    vector<vector<string>> data;
+    ifstream file;
 
-    //cout << lToken->name << endl;
-}
-
-void
-Parser::match(int t)
-{
-	if (lToken->name == t || lToken->attribute == t)
-		advance();
+	if (GotoAction == GOTO)
+		file = ifstream("./goto.csv");
 	else
-		error("Erro inesperado");
-}
+		file = ifstream("./action.csv");
+    
+    if (!file.is_open()) {
+        cerr << "Erro ao abrir o arquivo " << GotoAction << endl;
+        return data;
+    }
+    
+    string row;
+    while (getline(file, row)) {
+        stringstream ss(row);
+        string cell;
+        vector<string> rowData;
 
-void 
-Parser::goal()
-{
-	expr();
-}
+        while (getline(ss, cell, ',')) {
+            rowData.push_back(cell);
+            if (rowData[rowData.size()-1] == "COMMA")
+                rowData[rowData.size()-1] = ",";
+		}
+        data.push_back(rowData);
+    }
 
-void 
-Parser::expr()
-{
-	term();
-	exprLinha();
-}
+    file.close();
 
-void 
-Parser::exprLinha()
-{
-	if (lToken->name == PLUS)
-	{
-		advance();
-		term();
-		exprLinha();
-	}
-	else if (lToken->name == MINUS)
-	{
-		advance();
-		term();
-		exprLinha();
-	}
-	//else
-	//	;
-}
-
-void 
-Parser::term()
-{
-	factor();
-	termLinha();
-}
-
-void 
-Parser::termLinha()
-{
-	if (lToken->name == MULT)
-	{
-		advance();
-		factor();
-		termLinha();
-	}
-	else if (lToken->name == DIV)
-	{
-		advance();
-		factor();
-		termLinha();
-	}
-}
-
-void 
-Parser::factor()
-{
-	if (lToken->name == NUMBER)
-		advance();
-	else if (lToken->name == ID)
-		advance();
-	else if (lToken->name == LPAREN)
-	{
-		advance();
-		expr();
-		match(RPAREN);
-	}
-	else
-		error("Fator mal formado!");
-}
-
-void
-Parser::error(string str)
-{
-	cout << str << endl;
-
-	exit(EXIT_FAILURE);
+    return data;
 }

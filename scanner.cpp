@@ -119,6 +119,7 @@ Scanner::nextToken()
     }
 
     lexicalError();
+    return new Token(-1);
 }
 
 bool Scanner::isChar() {

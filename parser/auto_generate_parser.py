@@ -40,7 +40,7 @@ for state in productions.keys():
 
 
 
-parser = yacc.yacc("SLR")
+parser = yacc.yacc("LALR")
 action = parser.action
 goto = parser.goto
 
@@ -51,9 +51,13 @@ def join_action(index, action, rule_row):
     if index in action:
         row = action[index]
         for symbols in row.keys():
-            rule_row[symbols] = f"s{abs(row[symbols])}"
+            if symbols == "$end":
+                s = "$"
+            else:
+                s = grammar["Symbols"][tokens.index(symbols)]
+            rule_row[s] = f"s{abs(row[symbols])}"
             if row[symbols] < 0:
-                rule_row[symbols] = f"r{abs(row[symbols])}"
+                rule_row[s] = f"r{abs(row[symbols])}"
 
 def join_goto(index, goto, rule_row):
     if index in goto:
