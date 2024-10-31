@@ -13,7 +13,7 @@
     ],
     "Symbols":[
         "EOF", "ID", "(", ")", 
-        "{ ", "}", ",", ";", 
+        "{ ", "}", "COMMA", ";", 
         "char", "void", "int",
         "[", "]", "else", "if",
         "while", "return", "for",
