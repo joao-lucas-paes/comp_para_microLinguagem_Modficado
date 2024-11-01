@@ -16,15 +16,15 @@ enum types{
     SHIFT,
 };
 
-struct Goto
+struct Action
 {
     int kind=-1;
     int to=-1;
 };
 
 struct Table {
-    std::map<int, std::map<Token, int>> table_action;
-    std::map<int, std::map<Token, Goto>> table_goto;
+    std::vector<std::map<Token, Action>> table_action;
+    std::vector<std::map<Token, int>> table_goto;
 };
 
 class Parser
@@ -32,10 +32,13 @@ class Parser
     private:
         Scanner* scanner;
         Token* lToken;
-        std::map<int, std::map<Token, int>> table_action;
         Table table;
         vector<vector<std::string>> read_csv(int);
         void generate_table(vector<vector<std::string>>, vector<vector<std::string>>);
+        void resolveActionTable(int i, Token *header, int j, std::vector<std::vector<std::string>> &arrAction);
+        void addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int i, int j, Token *header);
+        Token assignToken(const std::string &tokenType);
+        Token getTokenFromScanner();
 
     public:
         Parser(string);

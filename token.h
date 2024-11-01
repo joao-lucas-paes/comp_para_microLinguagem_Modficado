@@ -47,34 +47,38 @@ enum RELOP
     OR,
 };
 
+enum IDTYPES
+{
+    FREE,
+    RESERVED
+};
+
 class Token {
     public: 
         int name;
         int attribute;
         string lexeme;
 
-        Token()
-        {
-            this->name = USELESS;
-        }
+        Token(): name(USELESS) {}
     
-        Token(int name)
-        {
-            this->name = name;
-            attribute = UNDEF;
-        }
+        Token(int n) : name(n), attribute(UNDEF){}
         
-        Token(int name, int attr)
-        {
-            this->name = name;
-            attribute = attr;
-        }
+        Token(int name, int attr) : name(name), attribute(attr){}
+
+        Token(int name, int attr, string lex) : name(name), attribute(attr), lexeme(lex){}
 
         bool operator==(Token &t) {
             if(this->name != ID and t.name != ID)
                 return t.name == this->name and t.attribute == this->attribute;
             else
                 return t.name == this->name and t.attribute == this->attribute and this->lexeme == t.lexeme;
+        }
+
+        bool operator<(const Token& t) const {
+            if (this->name == t.name)
+                return this->attribute > t.attribute;
+            else
+                return this->name > t.name;
         }
 
         string to_string() {

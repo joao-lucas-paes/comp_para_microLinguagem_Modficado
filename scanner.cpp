@@ -138,7 +138,7 @@ bool Scanner::isComment() {
     return input[pos] == '/' and input[pos + 1] == '*';
 }
 
-Token *Scanner::operatorGetter() {
+Token* Scanner::operatorGetter() {
     if (input[pos] == '=')
         return operatorCheck(ASSIGN, RELOP, '=', -1, EQ);
     
@@ -160,17 +160,16 @@ Token *Scanner::operatorGetter() {
     return new Token(UNDEF);
 }
 
-Token *Scanner::operatorCheck(int operator1, int operator2, char value, int attr1, int attr2) {
+Token* Scanner::operatorCheck(int operator1, int operator2, char value, int attr1, int attr2) {
     if (input[++pos] == value)
         return sumAndToken(operator2, attr2);
     return new Token(operator1, attr1);
 }
 
-Token *Scanner::idGetter() {
+Token* Scanner::idGetter() {
     // lexeme.push_back(input[pos]);
     pos++;
-    while (isalnum(input[pos]) || input[pos] == '_')
-    {
+    while (isalnum(input[pos]) || input[pos] == '_') {
         // lexeme.push_back(input[pos]);
         pos++;
     }
@@ -178,11 +177,10 @@ Token *Scanner::idGetter() {
     return new Token(ID);
 }
 
-Token *Scanner::digitGetter() {
+Token* Scanner::digitGetter() {
     // lexeme.push_back(input[pos]);
     pos++;
-    while (isdigit(input[pos]))
-    {
+    while (isdigit(input[pos])) {
         // lexeme.push_back(input[pos]);
         pos++;
     }
@@ -190,7 +188,8 @@ Token *Scanner::digitGetter() {
     return new Token(NUMBER);
 }
 
-Token* Scanner::sumAndToken(int name, int attr) {
+Token* 
+Scanner::sumAndToken(int name, int attr) {
     pos++;
     return new Token(name, attr);
 }
@@ -199,4 +198,10 @@ void
 Scanner::lexicalError() {
     cout << "Token " << "'" << input.substr(spos, pos - spos + 1) << "' mal formado\n" << endl;
     exit(EXIT_FAILURE);
+}
+
+void
+Scanner::setInput(string newInput) {
+    this->input = newInput;
+    this->pos = this->spos = 0;
 }

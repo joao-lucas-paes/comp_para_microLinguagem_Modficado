@@ -34,4 +34,6 @@ class Scanner
 
         // Metodo para manipular erros
         void lexicalError();
+
+        void setInput(string);
 };
