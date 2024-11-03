@@ -174,7 +174,7 @@ Token* Scanner::idGetter() {
         pos++;
     }
 
-    return new Token(ID);
+    return new Token(ID, FREE, input.substr(spos, pos - spos + 1));
 }
 
 Token* Scanner::digitGetter() {

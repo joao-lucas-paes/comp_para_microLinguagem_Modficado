@@ -49,6 +49,7 @@ enum RELOP
 
 enum IDTYPES
 {
+    STATE=-1,
     FREE,
     RESERVED
 };
@@ -68,26 +69,25 @@ class Token {
         Token(int name, int attr, string lex) : name(name), attribute(attr), lexeme(lex){}
 
         bool operator==(Token &t) {
-            if(this->name != ID and t.name != ID)
+            if(this->name != ID)
                 return t.name == this->name and t.attribute == this->attribute;
             else
                 return t.name == this->name and t.attribute == this->attribute and this->lexeme == t.lexeme;
         }
 
         bool operator<(const Token& t) const {
-            if (this->name == t.name)
-                return this->attribute > t.attribute;
-            else
-                return this->name > t.name;
+            if (this->attribute != t.attribute)
+                return this->attribute < t.attribute;
+            else if (this->name != t.name)
+                return this->name < t.name;
+            return this->lexeme < t.lexeme;
         }
 
-        string to_string() {
+        string to_string() const {
             string token_str;
             token_str = "Token(ID:" + std::to_string(this->name) + ",Attr:" + std::to_string(this->attribute) + ",Lexeme:" + this->lexeme +")";
             return token_str;
         }
-
-
 };
 
 template<typename Operator>
