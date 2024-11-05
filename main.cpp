@@ -2,7 +2,7 @@
 #include <sstream>
 
 int main() {
-    Parser("Function as(){}");
+    Parser();
 
     return 0;
 }

@@ -5,13 +5,17 @@
 #include <vector>
 #include <string>
 #include <regex>
+#include <stack>
 
 template <typename T>
 void printTable(const vector<map<Token, T>>& table) {
     for (const map<Token, T>& row : table) {
         for (const auto& [key, value] : row) {
             cout << key.to_string() << ":";
-            cout << value;
+            if constexpr (std::is_same_v<T, Action>)
+                cout << value.to_string();
+            else
+                cout << value;
             cout << " | ";
         }
         cout << endl;
@@ -25,13 +29,21 @@ void printKeys(const std::map<Token, ValueType>& map) {
     }
 }
 
-Parser::Parser(string input) {
-	this->scanner = new Scanner(input);
+Parser::Parser() {
+	this->scanner = new Scanner("");
     this->table = Table();
 	vector<vector<string>> arrgoto = read_csv(GOTO);
 	vector<vector<string>> arraction = read_csv(ACTION);
+    vector<vector<string>> arrrule = read_csv(RULE);
 	this->generate_table(arrgoto, arraction);
-    printTable(this->table.table_goto);
+    this->generate_rule(arrrule);
+}
+
+void Parser::generate_rule(vector<vector<string>> rules) { 
+    for (int i = 1; i < rules.size(); i++) {
+        this->scanner->setInput(rules[i][1]);
+        this->rules.push_back(std::make_pair(getTokenFromScanner(),stoi(rules[i][2])));
+    }
 }
 
 void Parser::generate_table(vector<vector<string>> arrGoto, vector<vector<string>> arrAction) {
@@ -87,8 +99,11 @@ void Parser::addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int
 {
     Action g;
     if (arrAction[i][j][0] == 'r')
-        g = {REDUCE, std::stoi(arrAction[i][j].substr(1))};
-    else if (arrAction[i][j].size() > 0)
+        if (header[j].lexeme == "$")
+            g = {ACCEPT, ACCEPT};
+        else
+            g = {REDUCE, std::stoi(arrAction[i][j].substr(1))};
+    else if (arrAction[i][j].size() > 0) 
         g = {SHIFT, std::stoi(arrAction[i][j].substr(1))};
     else
         g = {ERROR, -1};
@@ -123,8 +138,10 @@ vector<vector<string>> Parser::read_csv(int GotoAction) {
 
 	if (GotoAction == GOTO)
 		file = ifstream("./goto.csv");
-	else
+	else if (GotoAction == ACTION)
 		file = ifstream("./action.csv");
+    else
+        file = ifstream("./rules.csv");
     
     if (!file.is_open()) {
         cerr << "Erro ao abrir o arquivo " << GotoAction << endl;
@@ -141,6 +158,9 @@ vector<vector<string>> Parser::read_csv(int GotoAction) {
             rowData.push_back(cell);
             if (rowData[rowData.size()-1] == "COMMA")
                 rowData[rowData.size()-1] = ",";
+            else if(rowData[rowData.size()-1] == "EOF")
+                rowData[rowData.size()-1] = "\0";
+
 		}
         data.push_back(rowData);
     }
@@ -148,4 +168,27 @@ vector<vector<string>> Parser::read_csv(int GotoAction) {
     file.close();
 
     return data;
+}
+
+bool
+Parser::process(std::string input) {
+    this->scanner->setInput(input);
+    stack<int> s;
+    s.push(0);
+
+    while(true) {
+        Token n = this->getTokenFromScanner();
+        if(this->table.table_action[s.top()].find(n) != this->table.table_action[s.top()].end()) {
+            Action a = this->table.table_action[s.top()][n];
+            if(a.kind == SHIFT) {
+                s.push(a.to);
+            } else if(a.kind == REDUCE) {
+                for(int i = 0; i < this->rules[a.to].second; i++)
+                    s.pop();
+                s.push(this->table.table_goto[a.to][this->rules[a.to].first]);
+            } else if(a.kind == ACCEPT) {
+                return true;
+            }
+        }
+    }
 }

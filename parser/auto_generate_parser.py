@@ -26,19 +26,21 @@ t_len = int(
             ]))) + 1
 
 format_mode = f"0{t_len}d"
-rules = []
+rules = open("./rules.csv", "+w")
+values = ["index,token,n_rem"]
 
 for state in productions.keys():
     for index, rule in enumerate(productions[state]):
         name_prod = f"p_n{n_prod:0{t_len}d}_{state}_{index}"
+        n_rem = len([valor for valor in rule.split() if valor.lower() not in map(str.lower, tokens)])
+        values.append(f'{n_prod},{state},{n_rem}')
         n_prod += 1
-        rules.append(f'{state} -> {rule}')
         func = (f"def {name_prod} (p):\n"  + 
                 f"    '{state} : {rule}'\n"+
                 f"    pass")
         exec(func)
 
-
+rules.write("\n".join(values))
 
 parser = yacc.yacc("LALR")
 action = parser.action
