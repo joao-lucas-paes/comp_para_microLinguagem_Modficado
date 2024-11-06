@@ -1,0 +1,122 @@
+int test(void) {
+    int varInteger, varInteger2, arrayInteger[3];
+
+    varInteger = 0;
+    varInteger2 = -2
+    arrayInteger[0] = 1;
+    arrayInteger[1] = 1;
+    arrayInteger[0] = 2 + 2;
+    arrayInteger[1] = 2 - 2;
+    arrayInteger[0] = 2 * 2;
+    arrayInteger[1] = 2 / 2;
+
+    if (!varInteger) varInteger = 3;
+    if (varInteger == varInteger2) varInteger2 = 100;
+    if (varInteger != varInteger2) varInteger = 10;
+    if (varInteger <= varInteger2) varInteger2 = -4;
+    if (varInteger < varInteger2) varInteger = -1;
+    if (varInteger >= varInteger2) varInteger2 = 1;
+    if (varInteger > varInteger2) varInteger = 1;
+    if (varInteger && varInteger2) varInteger2 = 1;
+    if (varInteger || varInteger2) varInteger = 1;
+
+    if (varInteger == varInteger2) {
+        arrayInteger[0] = arrayInteger[1] + varInteger;
+    } else {
+        varInteger = 2;
+        varInteger2 = varInteger + varInteger;
+    }
+
+    if (varInteger == varInteger2) {
+        if (varInteger != arrayInteger) {
+            ;
+        } else {
+            arrayInteger[1] = arrayInteger[1] + varInteger;
+        }
+        arrayInteger[0] = arrayInteger[1] + varInteger;
+    }
+
+    if (!0);
+
+    if (!0);
+    else varInteger[2] = 3;
+
+    if (!arrayInteger[2]);
+    if(!arrayInteger[1]);
+    else varInteger[2] = 3;
+
+    while (2 == 2) {
+        varInteger = varInteger + varInteger;
+        return;
+    }
+
+    while (!2);
+
+    while (3 != 3) {
+        varInteger = -varInteger;
+    }
+
+    while ("a") {
+        function(2, 3, 4);
+    }
+
+    for (; ; ;);
+
+    for (varInteger = 2; ; ;) {
+
+    }
+
+    for (varInteger = 2; varInteger < 10; ;) {
+        functionTeste();
+        varInteger2 = 2;
+        varInteger = varInteger + varInteger2;
+        arrayInteger[2] = varInteger + varInteger2;
+        return 3;
+    }
+
+    for (varInteger = 2; varInteger < 10; varInteger = varInteger + 1;) {
+        arrayInteger[2] = 3;
+        arrayInteger[4] = varInteger + varInteger2;
+        arrayInteger[2] = 3;
+    }
+
+    for (varInteger = 2; varInteger + varInteger2; varInteger = 10;) {
+        functionTeste();
+        functionTeste(2, varInteger);
+        return 2;
+        ;
+    }
+
+    for (varInteger = 2; varInteger + varInteger2; varInteger = 10;) {
+        functionTeste();
+        functionTeste(2, varInteger);
+        return 2;
+        ;
+    }
+
+    function(2, varInteger, arrayInteger[2], arrayInteger, function2(2, 2), 3);
+
+    { 
+        (2 - 2)
+        (2 + 2)
+        (-2)
+        (!2)
+        (3*3)
+        (3 && 3);
+        ;
+    }
+
+    ;
+
+    return 2;
+    /*
+        olha, não sei como é a verificação do return ai, mas a linguagem em si permite retornar coisas diferentes do tipo da função, descomenta e ve se a verificação funciona, caso ela exista
+        return;
+        return !3;
+        return -3;
+        return 3 == 3;
+        return 3 != 3;
+        return "a";
+        return "asb" 
+    */
+}
