@@ -35,14 +35,16 @@ Parser::Parser() {
 	vector<vector<string>> arrgoto = read_csv(GOTO);
 	vector<vector<string>> arraction = read_csv(ACTION);
     vector<vector<string>> arrrule = read_csv(RULE);
-	this->generate_table(arrgoto, arraction);
-    this->generate_rule(arrrule);
+	generate_table(arrgoto, arraction);
+    generate_rule(arrrule);
 }
 
 void Parser::generate_rule(vector<vector<string>> rules) { 
     for (int i = 1; i < rules.size(); i++) {
         this->scanner->setInput(rules[i][1]);
-        this->rules.push_back(std::make_pair(getTokenFromScanner(),stoi(rules[i][2])));
+        Token t = getTokenFromScanner();
+        t.attribute = STATE;
+        this->rules.push_back(std::make_pair(t,stoi(rules[i][2])));
     }
 }
 
@@ -82,21 +84,26 @@ void Parser::gotoTableGenerate(std::vector<std::vector<std::string>> &arrGoto)
 void Parser::resolveActionGoto(int i, Token *header, int j, std::vector<std::vector<std::string>> &arrGoto)
 {
     if (i == 0) 
-        header[j] = Token(ID, USELESS, arrGoto[i][j]);
-    else
-        this->table.table_goto[i-1].insert(std::make_pair(header[j],std::stoi(arrGoto[i][j])));
+        header[j] = Token(ID, STATE, arrGoto[i][j]);
+    else {
+        int to = std::stoi(arrGoto[i][j]);
+        if (to != -1)
+            this->table.table_goto[i-1].insert(std::make_pair(header[j], to));
+    }
 }
 
 void Parser::resolveActionTable(int i, Token *header, int j, std::vector<std::vector<std::string>> &arrAction)
 {
-    if (i == 0)
+    if (i == 0) {
         header[j] = assignToken(arrAction[i][j]);
+        if(header[j].name == ID) 
+            this->reservedWords.push_back(header[j].lexeme);
+    }
     else if (i != 0)
         addKeyToTable(arrAction, i, j, header);
 }
 
-void Parser::addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int i, int j, Token *header)
-{
+void Parser::addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int i, int j, Token *header) {
     Action g;
     if (arrAction[i][j][0] == 'r')
         if (header[j].lexeme == "$")
@@ -106,7 +113,7 @@ void Parser::addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int
     else if (arrAction[i][j].size() > 0) 
         g = {SHIFT, std::stoi(arrAction[i][j].substr(1))};
     else
-        g = {ERROR, -1};
+        return; //g = {ERROR, -1};
     this->table.table_action[i-1].insert(std::make_pair(header[j], g));
 }
 
@@ -119,13 +126,19 @@ Token Parser::assignToken(const std::string& tokenType) {
         return Token(NUMBER);
     else if (tokenType == "$")
         return Token(ID, RESERVED, "$");
+    else if (tokenType == "ID")
+        return Token(ID, FREE);
 
     this->scanner->setInput(tokenType);
-    return getTokenFromScanner();
+    Token t = getTokenFromScanner();
+    if (t.name == ID)
+        t.attribute = RESERVED;
+    return t;
 }
 
-Token Parser::getTokenFromScanner()
-{
+Token Parser::getTokenFromScanner() {
+    if(this->scanner->isOut())
+        return Token(ID, RESERVED, "$");
     Token *t = this->scanner->nextToken();
     Token copy = *t;
     delete t;
@@ -175,20 +188,42 @@ Parser::process(std::string input) {
     this->scanner->setInput(input);
     stack<int> s;
     s.push(0);
+    Token n = this->getTokenFromScanner();
 
     while(true) {
-        Token n = this->getTokenFromScanner();
-        if(this->table.table_action[s.top()].find(n) != this->table.table_action[s.top()].end()) {
+        stack<int> sCopy = s;
+        
+        if (n.name == ID and is_reservedword(n)) {
+            n.attribute = RESERVED;
+        }
+        if (checkIfRowHasToken(s, n))
+        {
             Action a = this->table.table_action[s.top()][n];
             if(a.kind == SHIFT) {
                 s.push(a.to);
+                n = this->getTokenFromScanner();
             } else if(a.kind == REDUCE) {
-                for(int i = 0; i < this->rules[a.to].second; i++)
+                const auto& rule = this->rules[a.to - 1];
+                int popCount = rule.second;
+
+                for (int i = 0; i < popCount; ++i) {
                     s.pop();
-                s.push(this->table.table_goto[a.to][this->rules[a.to].first]);
+                }
+                int topState = s.top();
+                int gotoState = this->table.table_goto[topState][rule.first];
+                s.push(gotoState);
             } else if(a.kind == ACCEPT) {
                 return true;
             }
         }
     }
+}
+
+bool Parser::checkIfRowHasToken(stack<int> &s, Token &n)
+{
+    return this->table.table_action[s.top()].find(n) != this->table.table_action[s.top()].end();
+}
+
+bool Parser::is_reservedword(Token &n) {
+    return find(this->reservedWords.begin(), this->reservedWords.end(), n.lexeme) != this->reservedWords.end();
 }

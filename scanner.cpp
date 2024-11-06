@@ -205,3 +205,8 @@ Scanner::setInput(string newInput) {
     this->input = newInput;
     this->pos = this->spos = 0;
 }
+
+bool
+Scanner::isOut() {
+    return this->pos >= this->input.size();
+}

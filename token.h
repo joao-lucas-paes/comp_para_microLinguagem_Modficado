@@ -71,15 +71,16 @@ class Token {
         bool operator==(Token &t) {
             if(this->name != ID)
                 return t.name == this->name and t.attribute == this->attribute;
-            else
-                return t.name == this->name and t.attribute == this->attribute and this->lexeme == t.lexeme;
+            return t.name == this->name and t.attribute == this->attribute and this->lexeme == t.lexeme;
         }
 
         bool operator<(const Token& t) const {
             if (this->attribute != t.attribute)
                 return this->attribute < t.attribute;
-            else if (this->name != t.name)
+            if (this->name != t.name)
                 return this->name < t.name;
+            if (this->name == ID and this->attribute == FREE)
+                return false;
             return this->lexeme < t.lexeme;
         }
 
