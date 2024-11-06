@@ -32,6 +32,8 @@ class Scanner
 
         Token *sumAndToken(int name, int attr = -1);
 
+        bool isOut();
+
         // Metodo para manipular erros
         void lexicalError();
 

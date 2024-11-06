@@ -3,10 +3,12 @@
 #include <string>
 #include <vector>
 #include "scanner.h"
+#include <stack>
 
 enum TableKind {
     GOTO,
-    ACTION
+    ACTION,
+    RULE,
 };
 
 enum types {
@@ -21,7 +23,7 @@ struct Action
     int kind=-1;
     int to=-1;
     string to_string() const {
-        return "{ kind:" + std::to_string(this->kind) + ",to:" + std::to_string(this->to) + "}";
+        return "{kind:" + std::to_string(this->kind) + ",to:" + std::to_string(this->to) + "}";
     }
 };
 
@@ -36,8 +38,11 @@ class Parser
         Scanner* scanner;
         Token* lToken;
         Table table;
+        vector<std::string> reservedWords;
         vector<vector<std::string>> read_csv(int);
+        vector<std::pair<Token, int>> rules;
         void generate_table(vector<vector<std::string>>, vector<vector<std::string>>);
+        void generate_rule(vector<vector<std::string>>);
         void actionTableGenerate(std::vector<std::vector<std::string>> &arrAction);
         void gotoTableGenerate(std::vector<std::vector<std::string>> &arrGoto);
         void resolveActionTable(int i, Token *header, int j, std::vector<std::vector<std::string>> &arrAction);
@@ -45,7 +50,11 @@ class Parser
         void addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int i, int j, Token *header);
         Token assignToken(const std::string &tokenType);
         Token getTokenFromScanner();
+        bool is_reservedword(Token &n);
+        bool checkIfRowHasToken(std::stack<int> &s, Token &n);
 
     public:
-        Parser(string);
+        Parser();
+        bool process(string);
+
 };

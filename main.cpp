@@ -2,7 +2,8 @@
 #include <sstream>
 
 int main() {
-    Parser();
+    Parser p = Parser();
+    cout << p.process("") << endl;
 
     return 0;
 }

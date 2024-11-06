@@ -32,7 +32,7 @@ values = ["index,token,n_rem"]
 for state in productions.keys():
     for index, rule in enumerate(productions[state]):
         name_prod = f"p_n{n_prod:0{t_len}d}_{state}_{index}"
-        n_rem = len([valor for valor in rule.split() if valor.lower() not in map(str.lower, tokens)])
+        n_rem = len(rule.split())#[valor for valor in rule.split() if valor.lower() in map(str.lower, tokens)])
         values.append(f'{n_prod},{state},{n_rem}')
         n_prod += 1
         func = (f"def {name_prod} (p):\n"  + 
