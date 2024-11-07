@@ -48,6 +48,7 @@ Scanner::nextToken()
     }
 
     else if (isComment()) {
+        pos++;
         while (input[++pos] != '*' or input[pos+1] != '/');
         pos+=2;
         return this->nextToken();
@@ -174,7 +175,7 @@ Token* Scanner::idGetter() {
         pos++;
     }
 
-    return new Token(ID, FREE, input.substr(spos, pos - spos + 1));
+    return new Token(ID, FREE, input.substr(spos, pos - spos));
 }
 
 Token* Scanner::digitGetter() {

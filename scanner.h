@@ -38,4 +38,12 @@ class Scanner
         void lexicalError();
 
         void setInput(string);
+
+        int getPos() {
+            return this->pos;
+        }
+
+        string getLex() {
+            return this->input.substr(spos, pos - spos);
+        }
 };

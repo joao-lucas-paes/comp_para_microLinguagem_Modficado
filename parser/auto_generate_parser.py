@@ -68,7 +68,7 @@ def join_goto(index, goto, rule_row):
 rule_action_table = []
 rule_goto_table = []
 
-for index in range(max(list(action.keys()) + list(action.keys()))):
+for index in range(max(list(action.keys()) + list(action.keys())) + 1):
     rule_row_goto = {"prod_name":index}
     rule_row_action = {"prod_name":index}
     join_action(index, action, rule_row_action)

@@ -9,7 +9,9 @@
 
 template <typename T>
 void printTable(const vector<map<Token, T>>& table) {
+    int i = 0;
     for (const map<Token, T>& row : table) {
+        cout << "LINE(" << i++ << "): ";
         for (const auto& [key, value] : row) {
             cout << key.to_string() << ":";
             if constexpr (std::is_same_v<T, Action>)
@@ -142,6 +144,8 @@ Token Parser::getTokenFromScanner() {
     Token *t = this->scanner->nextToken();
     Token copy = *t;
     delete t;
+    if(copy.name == END_OF_FILE)
+        return Token(ID, RESERVED, "$");
     return copy;
 }
 
@@ -189,19 +193,19 @@ Parser::process(std::string input) {
     stack<int> s;
     s.push(0);
     Token n = this->getTokenFromScanner();
+    int pocket = 0;
 
     while(true) {
-        stack<int> sCopy = s;
-        
+        stack<int> sCopy = s;        
         if (n.name == ID and is_reservedword(n)) {
             n.attribute = RESERVED;
         }
-        if (checkIfRowHasToken(s, n))
-        {
+        if (checkIfRowHasToken(s, n)) {
             Action a = this->table.table_action[s.top()][n];
             if(a.kind == SHIFT) {
                 s.push(a.to);
                 n = this->getTokenFromScanner();
+                pocket++;
             } else if(a.kind == REDUCE) {
                 const auto& rule = this->rules[a.to - 1];
                 int popCount = rule.second;
@@ -215,6 +219,9 @@ Parser::process(std::string input) {
             } else if(a.kind == ACCEPT) {
                 return true;
             }
+        } else {
+            cout << "ERRO EM " << n.to_string() << " nao registrado em " << s.top() << endl;
+            exit(0);
         }
     }
 }

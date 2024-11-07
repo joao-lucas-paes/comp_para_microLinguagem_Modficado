@@ -86,7 +86,7 @@ class Token {
 
         string to_string() const {
             string token_str;
-            token_str = "Token(ID:" + std::to_string(this->name) + ",Attr:" + std::to_string(this->attribute) + ",Lexeme:" + this->lexeme +")";
+            token_str = "Token(name:" + std::to_string(this->name) + ",attr:" + std::to_string(this->attribute) + ",Lexeme:" + this->lexeme +")";
             return token_str;
         }
 };
