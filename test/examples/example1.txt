@@ -60,7 +60,7 @@ int test(void) {
         function(2, 3, 4);
     }
 
-    for (; ; ;);
+    for (; ; );
 
     for (varInteger = 2; ; ;) {
 
