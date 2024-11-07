@@ -1,4 +1,6 @@
 int test(void) {
+
+    // ...... asdjra adsjn texto ignoravel
     int varInteger, varInteger2, arrayInteger[3];
 
     varInteger = 0;
@@ -97,11 +99,11 @@ int test(void) {
     function(2, varInteger, arrayInteger[2], arrayInteger, function2(2, 2), 3);
 
     { 
-        (2 - 2)
-        (2 + 2)
-        (-2)
-        (!2)
-        (3*3)
+        varshow = (2 - 2) -
+        (2 + 2) *
+        (-2) /
+        (!2) -
+        (3*3) +
         (3 && 3);
         ;
     }
