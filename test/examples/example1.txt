@@ -2,7 +2,7 @@ int test(void) {
     int varInteger, varInteger2, arrayInteger[3];
 
     varInteger = 0;
-    varInteger2 = -2
+    varInteger2 = -2;
     arrayInteger[0] = 1;
     arrayInteger[1] = 1;
     arrayInteger[0] = 2 + 2;
