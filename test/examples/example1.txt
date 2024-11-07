@@ -62,11 +62,11 @@ int test(void) {
 
     for (; ; );
 
-    for (varInteger = 2; ; ;) {
+    for (varInteger = 2; ;) {
 
     }
 
-    for (varInteger = 2; varInteger < 10; ;) {
+    for (varInteger = 2; varInteger < 10;) {
         functionTeste();
         varInteger2 = 2;
         varInteger = varInteger + varInteger2;
@@ -74,20 +74,20 @@ int test(void) {
         return 3;
     }
 
-    for (varInteger = 2; varInteger < 10; varInteger = varInteger + 1;) {
+    for (varInteger = 2; varInteger < 10; varInteger = varInteger + 1) {
         arrayInteger[2] = 3;
         arrayInteger[4] = varInteger + varInteger2;
         arrayInteger[2] = 3;
     }
 
-    for (varInteger = 2; varInteger + varInteger2; varInteger = 10;) {
+    for (varInteger = 2; varInteger + varInteger2; varInteger = 10) {
         functionTeste();
         functionTeste(2, varInteger);
         return 2;
         ;
     }
 
-    for (varInteger = 2; varInteger + varInteger2; varInteger = 10;) {
+    for (varInteger = 2; varInteger + varInteger2; varInteger = 10) {
         functionTeste();
         functionTeste(2, varInteger);
         return 2;
