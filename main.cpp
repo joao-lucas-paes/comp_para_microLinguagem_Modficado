@@ -1,8 +1,8 @@
-#include "parser.h"
+#include "parserll.h"
 #include <sstream>
 
 int main() {
-    Parser p = Parser();
+    ParserLL p = ParserLL();
     std::string input = "";
     std::string linha;
     

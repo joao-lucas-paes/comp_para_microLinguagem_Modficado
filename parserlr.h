@@ -32,7 +32,7 @@ struct Table {
     std::vector<std::map<Token, int>> table_goto;
 };
 
-class Parser
+class ParserLR
 {
     private:
         Scanner* scanner;
@@ -54,7 +54,7 @@ class Parser
         bool checkIfRowHasToken(std::stack<int> &s, Token &n);
 
     public:
-        Parser();
+        ParserLR();
         bool process(string);
 
 };

@@ -90,13 +90,3 @@ class Token {
             return token_str;
         }
 };
-
-template<typename Operator>
-struct StructIs {
-  int name;
-  int attribute=0;
-  StructIs(Token t): name(t.name), attribute(t.attribute){};
-  StructIs(int n, int a): name(n), attribute(a){};
-};
-
-enum tokenOperator { Operationis=-1 };

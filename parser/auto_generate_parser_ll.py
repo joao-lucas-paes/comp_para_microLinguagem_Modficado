@@ -121,4 +121,4 @@ def firstp_proccede(s, symbols, i=0):
 
 first_calc()
 follow_calc()
-print(str(first_p()).replace('\'', '\"'))
+print(str(first_p()).replace('\'', '\"').replace("[", "{").replace("]", "}"))

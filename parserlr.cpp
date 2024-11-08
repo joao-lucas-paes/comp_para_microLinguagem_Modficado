@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "parserlr.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -31,7 +31,7 @@ void printKeys(const std::map<Token, ValueType>& map) {
     }
 }
 
-Parser::Parser() {
+ParserLR::ParserLR() {
 	this->scanner = new Scanner("");
     this->table = Table();
 	vector<vector<string>> arrgoto = read_csv(GOTO);
@@ -41,7 +41,7 @@ Parser::Parser() {
     generate_rule(arrrule);
 }
 
-void Parser::generate_rule(vector<vector<string>> rules) { 
+void ParserLR::generate_rule(vector<vector<string>> rules) { 
     for (int i = 1; i < rules.size(); i++) {
         this->scanner->setInput(rules[i][1]);
         Token t = getTokenFromScanner();
@@ -50,12 +50,12 @@ void Parser::generate_rule(vector<vector<string>> rules) {
     }
 }
 
-void Parser::generate_table(vector<vector<string>> arrGoto, vector<vector<string>> arrAction) {
+void ParserLR::generate_table(vector<vector<string>> arrGoto, vector<vector<string>> arrAction) {
     actionTableGenerate(arrAction);
     gotoTableGenerate(arrGoto);
 }
 
-void Parser::actionTableGenerate(std::vector<std::vector<std::string>> &arrAction)
+void ParserLR::actionTableGenerate(std::vector<std::vector<std::string>> &arrAction)
 {
     int headerLength = (int)arrAction[0].size();
     Token *actionHeader = new Token[headerLength];
@@ -69,7 +69,7 @@ void Parser::actionTableGenerate(std::vector<std::vector<std::string>> &arrActio
     delete[] actionHeader;
 }
 
-void Parser::gotoTableGenerate(std::vector<std::vector<std::string>> &arrGoto)
+void ParserLR::gotoTableGenerate(std::vector<std::vector<std::string>> &arrGoto)
 {
     int headerLength = (int)arrGoto[0].size();
     Token *gotoHeader = new Token[headerLength];
@@ -83,7 +83,7 @@ void Parser::gotoTableGenerate(std::vector<std::vector<std::string>> &arrGoto)
     delete[] gotoHeader;
 }
 
-void Parser::resolveActionGoto(int i, Token *header, int j, std::vector<std::vector<std::string>> &arrGoto)
+void ParserLR::resolveActionGoto(int i, Token *header, int j, std::vector<std::vector<std::string>> &arrGoto)
 {
     if (i == 0) 
         header[j] = Token(ID, STATE, arrGoto[i][j]);
@@ -94,7 +94,7 @@ void Parser::resolveActionGoto(int i, Token *header, int j, std::vector<std::vec
     }
 }
 
-void Parser::resolveActionTable(int i, Token *header, int j, std::vector<std::vector<std::string>> &arrAction)
+void ParserLR::resolveActionTable(int i, Token *header, int j, std::vector<std::vector<std::string>> &arrAction)
 {
     if (i == 0) {
         header[j] = assignToken(arrAction[i][j]);
@@ -105,7 +105,7 @@ void Parser::resolveActionTable(int i, Token *header, int j, std::vector<std::ve
         addKeyToTable(arrAction, i, j, header);
 }
 
-void Parser::addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int i, int j, Token *header) {
+void ParserLR::addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int i, int j, Token *header) {
     Action g;
     if (arrAction[i][j][0] == 'r')
         if (header[j].lexeme == "$")
@@ -119,7 +119,7 @@ void Parser::addKeyToTable(std::vector<std::vector<std::string>> &arrAction, int
     this->table.table_action[i-1].insert(std::make_pair(header[j], g));
 }
 
-Token Parser::assignToken(const std::string& tokenType) {
+Token ParserLR::assignToken(const std::string& tokenType) {
     if (tokenType == "charconstant")
         return Token(LITERAL, CHAR);
     else if (tokenType == "stringconstant")
@@ -138,7 +138,7 @@ Token Parser::assignToken(const std::string& tokenType) {
     return t;
 }
 
-Token Parser::getTokenFromScanner() {
+Token ParserLR::getTokenFromScanner() {
     if(this->scanner->isOut())
         return Token(ID, RESERVED, "$");
     Token *t = this->scanner->nextToken();
@@ -149,7 +149,7 @@ Token Parser::getTokenFromScanner() {
     return copy;
 }
 
-vector<vector<string>> Parser::read_csv(int GotoAction) {
+vector<vector<string>> ParserLR::read_csv(int GotoAction) {
     vector<vector<string>> data;
     ifstream file;
 
@@ -188,7 +188,7 @@ vector<vector<string>> Parser::read_csv(int GotoAction) {
 }
 
 bool
-Parser::process(std::string input) {
+ParserLR::process(std::string input) {
     this->scanner->setInput(input);
     stack<int> s;
     s.push(0);
@@ -226,11 +226,11 @@ Parser::process(std::string input) {
     }
 }
 
-bool Parser::checkIfRowHasToken(stack<int> &s, Token &n)
+bool ParserLR::checkIfRowHasToken(stack<int> &s, Token &n)
 {
     return this->table.table_action[s.top()].find(n) != this->table.table_action[s.top()].end();
 }
 
-bool Parser::is_reservedword(Token &n) {
+bool ParserLR::is_reservedword(Token &n) {
     return find(this->reservedWords.begin(), this->reservedWords.end(), n.lexeme) != this->reservedWords.end();
 }
