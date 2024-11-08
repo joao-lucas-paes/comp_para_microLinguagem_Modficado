@@ -44,30 +44,30 @@
             "while LPAREN Expression RPAREN Statement",
             "for LPAREN possibleAssign SEMICOLON possibleExpression SEMICOLON possibleAssign RPAREN Statement",
             "return possibleExpression SEMICOLON",
-            "Assign SEMICOLON",
-            "ID LPAREN possibleExpression_comma RPAREN SEMICOLON",
+            "ID IDdecision SEMICOLON",
             "LBRACKET mStatement RBRACKET",
             "SEMICOLON"
             ],
         "elseStatement": ["", "else Statement"],
         "mStatement": ["", "Statement mStatement"],
+        "IDdecision": ["possibleIDCall RECEIVE Expression", "LPAREN possibleExpression_comma RPAREN"],
         "Assign": ["ID possibleIDCall RECEIVE Expression"],
         "possibleIDCall": ["", "LBRACE Expression RBRACE"],
         "possibleAssign": ["", "Assign"],
         "Expression": [
-            "MINUS Expression",
-            "NOT Expression",
-            "Expression Operation",
-            "ID IDCall",
-            "LPAREN Expression RPAREN",
-            "integerconstant",
-            "charconstant",
-            "stringconstant"
+            "MINUS Expression Operation",
+            "NOT Expression Operation",
+            "ID IDCall Operation",
+            "LPAREN Expression RPAREN Operation",
+            "integerconstant Operation",
+            "charconstant Operation",
+            "stringconstant Operation"
             ],
         "Operation":[
             "BinOP Expression",
             "RelOP Expression",
-            "LogOP Expression"
+            "LogOP Expression",
+            ""
             ],
         "commaExpression": ["", "COMMA Expression commaExpression"],
         "possibleExpression_comma":["", "Expression commaExpression"],
