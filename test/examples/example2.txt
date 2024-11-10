@@ -1,0 +1,123 @@
+char test(void) {
+
+    char varChar, varChar2, arrayChar[3];
+
+    varChar = 0;
+    varChar2 = -2;
+    arrayChar[0] = 1;
+    arrayChar[1] = 1;
+    arrayChar[0] = 2 + 2;
+    arrayChar[1] = 2 - 2;
+    arrayChar[0] = 2 * 2;
+    arrayChar[1] = 2 / 2;
+
+    if (!varChar) varChar = 3;
+    if (varChar == varChar1) varChar2 = 100;
+    if (varChar != varChar2) varChar = 10;
+    if (varChar <= varChar2) varChar2 = -4;
+    if (varChar < varChar2) varChar = -1;
+    if (varChar >= varChar2) varChar2 = 1;
+    if (varChar > varChar2) varChar = 1;
+    if (varChar && varChar2) varChar2 = 1;
+    if (varChar || varChar2) varChar = 1;
+
+    if (varChar == varChar2) {
+        arrayChar[0] = arrayChar[1] + varChar;
+    } else {
+        varChar = 2;
+        varChar2 = varChar + varChar;
+    }
+
+    if (varChar == varChar2) {
+        if (varChar != arrayChar) {
+            ;
+        } else {
+            arrayChar[1] = arrayChar[1] + varChar;
+        }
+        arrayChar[0] = arrayChar[1] + varChar;
+    }
+
+    if (!0);
+
+    if (!0);
+    else varChar[2] = 3;
+
+    if (!arrayChar[2]);
+    if(!arrayChar[1]);
+    else varChar[2] = 3;
+
+    while (2 == 2) {
+        varChar = varChar + varChar;
+        return;
+    }
+
+    while (!2);
+
+    while (3 != 3) {
+        varChar = -varChar;
+    }
+
+    while ("a") {
+        function(2, 3, 4);
+    }
+
+    for (; ; );
+
+    for (varChar = 2; ;) {
+
+    }
+
+    for (varChar = 2; varChar < 10;) {
+        functionTeste();
+        varChar2 = 2;
+        varChar = varChar + varChar2;
+        arrayChar[2] = varChar + varChar2;
+        return 3;
+    }
+
+    for (varChar = 2; varChar < 10; varChar = varChar + 1) {
+        arrayChar[2] = 3;
+        arrayChar[4] = varChar + varChar2;
+        arrayChar[2] = 3;
+    }
+
+    for (varChar = 2; varChar + varChar2; varChar = 10) {
+        functionTeste();
+        functionTeste(2, varChar);
+        return 2;
+        ;
+    }
+
+    for (varChar = 2; varChar + varChar2; varChar = 10) {
+        functionTeste();
+        functionTeste(2, varChar);
+        return 2;
+        ;
+    }
+
+    function(2, varChar, arrayChar[2], arrayChar, function2(2, 2), 3);
+
+    { 
+        varshow = (2 - 2) -
+        (2 + 2) *
+        (-2) /
+        (!2) -
+        (3*3) +
+        (3 && 3);
+        ;
+    }
+
+    ;
+
+    return 2;
+    /*
+        olha, não sei como é a verificação do return ai, mas a linguagem em si permite retornar coisas diferentes do tipo da função, descomenta e ve se a verificação funciona, caso ela exista
+        return;
+        return !3;
+        return -3;
+        return 3 == 3;
+        return 3 != 3;
+        return "a";
+        return "asb" 
+    */
+}

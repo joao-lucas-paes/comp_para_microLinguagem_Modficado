@@ -1,0 +1,47 @@
+void sla(void) {
+
+}
+
+void sla2(int number) {
+
+}
+
+void sla3(int number, char sla) {
+
+}
+
+void teste(void) {
+    int teste;
+    char teste2, char sla[4];
+
+    //todas as possiveis produções do expression dentro estão nos if
+    if (-teste);
+    if (!teste);
+    if (teste +  test2);
+    if (teste - teste2);
+    if (teste * teste2);
+    if (teste / teset2);
+    if (teste == teste2);
+    if (teste != teste2);
+    if (teste <= teste2);
+    if (teste < teset2);
+    if (teste >= teste2);
+    if (teste > teste2);
+    if (teste && teste2);
+    if (teste || teste2);
+    if (teste);
+    if (sla());
+    if (sla2(-2));
+    if (sla());
+    if (sla2(-2));
+    if (sla3(2, "a"));
+    if (sla4[oi]);
+    if ((teste || teste2));
+    if (2);
+    if ("c");
+    if ("asd");
+}
+
+void testandoo(int testando, char testando2, char testando3[2], int testando4[3]) {
+
+}
