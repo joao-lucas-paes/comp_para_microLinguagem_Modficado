@@ -49,7 +49,7 @@ enum RELOP
 
 enum IDTYPES
 {
-    STATE=-1,
+    STATE=1,
     FREE,
     RESERVED
 };
@@ -68,9 +68,7 @@ class Token {
 
         Token(int name, int attr, string lex) : name(name), attribute(attr), lexeme(lex){}
 
-        bool operator==(Token &t) {
-            if(this->name != ID)
-                return t.name == this->name and t.attribute == this->attribute;
+        bool operator==(const Token &t) const {
             return t.name == this->name and t.attribute == this->attribute and this->lexeme == t.lexeme;
         }
 

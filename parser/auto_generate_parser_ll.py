@@ -119,6 +119,36 @@ def firstp_proccede(s, symbols, i=0):
                 rules += follow[s]
     return rules
 
+def dict_to_cpp_map_string_token(d):
+    cpp_map = "std::map<std::Token, std::vector<std::vector<Token>>> firstp = {\n"
+    for key, value in d.items():
+        cpp_map += f'    {{Token(ID, STATE, "{key}"), {{'
+        formatted_vectors = []
+        for inner_list in value:
+            formatted_tokens = ', '.join(f'Token("{token}")' for token in inner_list)
+            formatted_vectors.append(f'{{{formatted_tokens}}}')
+        cpp_map += f"{', '.join(formatted_vectors)}}}}},\n"
+    cpp_map += "};"
+    return cpp_map
+
+def dict_to_cpp_map_string_str(d):
+    cpp_map = "std::map<Token, std::vector<std::vector<std::Token>>> firstp = {\n"
+    for key, value in d.items():
+        cpp_map += f'    {{Token(ID, STATE, "{key}"), {{'
+        formatted_vectors = []
+        for inner_list in value:
+            formatted_tokens = ', '.join(f'Token(ID, STATE, "{token}")' if token not in tokens else f'Token(ID, RESERVED, "{token}")' for token in inner_list.split(" "))
+            formatted_vectors.append(f'{{{formatted_tokens}}}')
+        cpp_map += f"{', '.join(formatted_vectors)}}}}},\n"
+    cpp_map += "};"
+    return cpp_map
+
 first_calc()
 follow_calc()
-print(str(first_p()).replace('\'', '\"').replace("[", "{").replace("]", "}"))
+print("#include <iostream>")
+print("#include <string>")
+print("#include <map>")
+print("#include <vector>")
+print(dict_to_cpp_map_string_str(productions))
+print("//")
+print(dict_to_cpp_map_string_token(first_p()))
