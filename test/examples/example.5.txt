@@ -1,0 +1,29 @@
+void teste(void) {
+    int teste, teste3;
+    char teste2, char sla[4];
+
+    //tudo do assign
+
+    teste = 2;
+    teste = teste * 3;
+    teste = teste / 3;
+    teste = teste - 3;
+    teste = teste + 3;
+
+    teste3 = -2;
+    teste3 = teste * teste3;
+    teste3 = teste / teste3;
+    teste3 = teste - teste3;
+    teste3 = teste + teste3;
+
+    teste = teste2;
+
+    sla[0] = "s";
+    teste2 = sla[0];
+
+    // sintaticamente possivel:
+    sla[0] = "sasdasd";
+    sla["D"] = "C";
+    sla[(2*1)] = "V";
+    sla[0] = !sla[0];
+}
