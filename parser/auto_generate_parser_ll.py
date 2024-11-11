@@ -86,10 +86,9 @@ def follow_proccede(state, s, symbols, i):
         if symbols[i + 1] in tokens:  # Caso trivial
             join_m(state, [symbols[i + 1]], follow)
         else:
+            join_m(state, first[symbols[i + 1]], follow)
             if "" in productions[symbols[i + 1]]:
                 join_m(state, follow_state(symbols[i + 1]), follow)
-            else:
-                join_m(state, first[symbols[i + 1]], follow)
 
 def first_p():
     rules = {}
@@ -145,10 +144,11 @@ def dict_to_cpp_map_string_str(d):
 
 first_calc()
 follow_calc()
-print("#include <iostream>")
-print("#include <string>")
-print("#include <map>")
-print("#include <vector>")
-print(dict_to_cpp_map_string_str(productions))
-print("//")
-print(dict_to_cpp_map_string_token(first_p()))
+print(str(first_p()).replace("'", '"'))
+# print("#include <iostream>")
+# print("#include <string>")
+# print("#include <map>")
+# print("#include <vector>")
+# print(dict_to_cpp_map_string_str(productions))
+# print("//")
+# print(dict_to_cpp_map_string_token(first_p()))

@@ -62,16 +62,16 @@ Scanner::nextToken()
         return sumAndToken(RPAREN);
     
     else if (input[pos] == '[')
-        return sumAndToken(LBRACKET);
-
-    else if (input[pos] == ']')
-        return sumAndToken(RBRACKET);
-    
-    else if (input[pos] == '{')
         return sumAndToken(LBRACE);
 
-    else if (input[pos] == '}')
+    else if (input[pos] == ']')
         return sumAndToken(RBRACE);
+    
+    else if (input[pos] == '{')
+        return sumAndToken(LBRACKET);
+
+    else if (input[pos] == '}')
+        return sumAndToken(RBRACKET);
     
     else if (input[pos] == ';')
         return sumAndToken(SEMICOLON);
