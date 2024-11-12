@@ -1,4 +1,5 @@
-#include "scanner.h"    
+#include "scanner.h"
+#include <algorithm>
 
 bool isOperator(char input){
     return input == '=' or input == '>' or input == '<' or input == '!' or input == '&' or input == '|';
@@ -11,6 +12,7 @@ Scanner::Scanner(string input)
     pos = 0;
     spos = 0;
 }
+
 
 //Metodo que retorna o proximo token da entrada
 Token* 
@@ -62,16 +64,16 @@ Scanner::nextToken()
         return sumAndToken(RPAREN);
     
     else if (input[pos] == '[')
-        return sumAndToken(LBRACE);
-
-    else if (input[pos] == ']')
-        return sumAndToken(RBRACE);
-    
-    else if (input[pos] == '{')
         return sumAndToken(LBRACKET);
 
-    else if (input[pos] == '}')
+    else if (input[pos] == ']')
         return sumAndToken(RBRACKET);
+    
+    else if (input[pos] == '{')
+        return sumAndToken(LBRACE);
+
+    else if (input[pos] == '}')
+        return sumAndToken(RBRACE);
     
     else if (input[pos] == ';')
         return sumAndToken(SEMICOLON);
@@ -174,7 +176,9 @@ Token* Scanner::idGetter() {
         // lexeme.push_back(input[pos]);
         pos++;
     }
-
+    string word = input.substr(spos, pos - spos);
+    if(find(this->reservedWords.begin(), this->reservedWords.end(), word) != this->reservedWords.end())
+        return new Token(ID, RESERVED, input.substr(spos, pos - spos));
     return new Token(ID, FREE, input.substr(spos, pos - spos));
 }
 

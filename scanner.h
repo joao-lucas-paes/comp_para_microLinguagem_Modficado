@@ -1,4 +1,5 @@
 #include "token.h"
+#include <vector>
 
 class Scanner 
 {
@@ -8,7 +9,7 @@ class Scanner
         int spos;//posicao inicial
     
     public:
-    //Construtor
+        //Construtor
         Scanner(string);
     
         //Método que retorna o proximo token da entrada
@@ -31,6 +32,8 @@ class Scanner
         Token *operatorCheck(int operator1, int operator2, char value, int attr1 = -1, int attr2 = -1);
 
         Token *sumAndToken(int name, int attr = -1);
+
+        vector<string> reservedWords = {"else", "if", "while", "return", "for", "char", "void", "int"};
 
         bool isOut();
 

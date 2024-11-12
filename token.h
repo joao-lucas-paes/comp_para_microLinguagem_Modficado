@@ -60,7 +60,7 @@ class Token {
         int attribute;
         string lexeme;
 
-        Token(): name(USELESS) {}
+        Token() : name(USELESS) {}
     
         Token(int n) : name(n), attribute(UNDEF){}
         

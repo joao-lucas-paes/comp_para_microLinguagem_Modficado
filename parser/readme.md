@@ -1,1 +1,0 @@
-Esses arquivos geram a tabela GOTO e ACTION do parser desejado automaticamente, a tabela GOTO tem uma particularidade, ela gera -1 no lugar de gerar NaN, pois somente float suporta NaN e -1 n eh um valor aceitavel para o goto, logo n existe problema em aceita-lo.

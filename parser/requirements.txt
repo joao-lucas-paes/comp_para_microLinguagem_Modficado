@@ -1,4 +1,0 @@
-rstr
-lalr
-ply
-pandas
