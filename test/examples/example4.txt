@@ -12,7 +12,7 @@ void sla3(int number, char sla) {
 
 void teste(void) {
     int teste;
-    char teste2, char sla[4];
+    char teste2, sla[4];
 
     //todas as possiveis produções do expression dentro estão nos if
     if (-teste);
@@ -42,6 +42,6 @@ void teste(void) {
     if ("asd");
 }
 
-void testandoo(int testando, char testando2, char testando3[2], int testando4[3]) {
+void testandoo(int testando, char testando2, char testando3[], int testando4[]) {
 
 }
