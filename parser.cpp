@@ -366,7 +366,7 @@ void Parser::assignExpression()
     if (isMatch(LBRACKET))
     {
         advance();
-        match(NUMBER);
+        expression();
         match(RBRACKET);
     }
     match(ASSIGN);
