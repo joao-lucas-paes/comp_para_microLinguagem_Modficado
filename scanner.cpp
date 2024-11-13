@@ -27,7 +27,7 @@ Scanner::nextToken()
     //Verificar os tokens possíveis
     spos = pos;
     //Fim de arquivo
-    if (input[pos] == '\0') {
+    if (input[pos] == '\0' or pos >= input.size()) {
         return sumAndToken(END_OF_FILE);
     }
 
@@ -45,13 +45,13 @@ Scanner::nextToken()
         return sumAndToken(DIV);
 
     else if (isCommentLine()) {
-        while (input[++pos] != '\n');
+        while (pos < input.size() - 1 and input[++pos] != '\n');
         return this->nextToken();
     }
 
     else if (isComment()) {
         pos++;
-        while (input[++pos] != '*' or input[pos+1] != '/');
+        while (pos < input.size() - 1 and (input[++pos] != '*' or input[pos + 1] != '/'));
         pos+=2;
         return this->nextToken();
     } 
