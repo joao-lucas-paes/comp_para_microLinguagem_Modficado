@@ -1,0 +1,31 @@
+char teste(void) {
+    int teste2, teste3[2];
+
+    while (1);
+
+    teste2 = 1;
+
+    while (teste2 == 0) {
+        ;
+    }
+
+    while ( (teste2 == 0) && (teste2 == 0) ) {
+        ;
+    }
+
+    while ( (teste2 == 0) && (teste2 == 0)  && (teste2 == 0) ) {
+        ;
+    }
+
+    while ( (teste2 == 0) && (teste2 == 0)  && (teste2 == 0) ) {
+        while (teste2 == 0) {
+            while (1);
+        }
+    }
+
+    while ( (teste2 == 0) && (teste2 == 0)  && (teste2 == 0) ) {
+        while (teste2 == 0) {
+            teste3[0] = teste2;
+        }
+    }
+}
